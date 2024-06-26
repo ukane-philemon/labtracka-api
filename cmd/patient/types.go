@@ -1,0 +1,78 @@
+package patient
+
+import (
+	"time"
+
+	"github.com/ukane-philemon/labtracka-api/db"
+)
+
+type sendOTPRequest struct {
+	DeviceID         string `json:"device_id"`
+	Receiver         string `json:"receiver"`
+	ForPasswordReset bool   `json:"for_password_reset"`
+}
+
+type validateOTPRequest struct {
+	DeviceID string `json:"device_id"`
+	Receiver string `json:"receiver"`
+	OTP      string `json:"otp"`
+}
+
+type timedValue struct {
+	value  string
+	expiry time.Time
+}
+
+// loginRequest is information required for login.
+type loginRequest struct {
+	Email                string `json:"email"`
+	Password             string `json:"password"`
+	DeviceID             string `json:"device_id"`
+	NotificationToken    string `json:"notification_token"`     // TODO: Validate
+	EmailValidationToken string `json:"email_validation_token"` // optional
+}
+
+type loginResponse struct {
+	*db.Patient
+	db.PatientStats
+	AvailableLabs []*db.BasicLabInfo `json:"available_labs"`
+	Auth          *authResponse      `json:"auth"`
+}
+
+// resetPasswordRequest is information required to reset patient password.
+type resetPasswordRequest struct {
+	Email                string `json:"email"`
+	NewPassword          string `json:"new_password"`
+	DeviceID             string `json:"device_id"`
+	EmailValidationToken string `json:"email_validation_token"`
+}
+
+// changePasswordRequest is information required to change password for a logged
+// in patient.
+type changePasswordRequest struct {
+	CurrentPassword string `json:"current_password"`
+	NewPassword     string `json:"new_password"`
+}
+
+type createAccountRequest struct {
+	db.PatientInfo
+	DeviceID             string `json:"device_id"`
+	Password             string `json:"password"`
+	EmailValidationToken string `json:"email_validation_code"`
+}
+
+type authResponse struct {
+	AccessToken     string `json:"access_token"`
+	ExpiryInSeconds uint64 `json:"expiry_in_seconds"`
+}
+
+type patientProfile struct {
+	db.PatientInfo
+}
+
+type createOrderRequest struct {
+	Tests          []string    `json:"tests"` // test ids, can be packages
+	PatientID      string      `json:"patient_id" bson:"patient_id"`
+	SubAccountID   string      `json:"sub_account_id" bson:"sub_account_id"`
+	PatientAddress *db.Address `json:"patient_address" bson:"patient_address"`
+}
