@@ -122,33 +122,33 @@ func (m *MongoDB) LabTests(labID string) (*db.LabTests, error) {
 		},
 		Tests: []*db.LabTest{
 			{
-				ID:                     primitive.NewObjectID().Hex(),
-				Name:                   "Golden Package",
-				LabID:                  labID,
-				LabName:                "Test Lab",
-				Price:                  45000,
-				OldPrice:               0,
-				Description:            "Golden Package is the perfect package you need to check your wellbeing",
-				Gender:                 "All",
-				Categories:             []string{c1, c2, c3},
-				IsDisabled:             false,
-				SampleCollectionMethod: []string{"Walk-In", "Home"},
-				Tests:                  []string{"test" + c1, "test" + c2, "test" + c3},
-				CreatedAt:              nowUnix,
-				LastUpdatedAt:          nowUnix,
+				ID:                   primitive.NewObjectID().Hex(),
+				Name:                 "Golden Package",
+				LabID:                labID,
+				LabName:              "Test Lab",
+				Price:                45000,
+				OldPrice:             0,
+				Description:          "Golden Package is the perfect package you need to check your wellbeing",
+				Gender:               "All",
+				Categories:           []string{c1, c2, c3},
+				IsDisabled:           false,
+				SampleCollectionMode: []string{"Walk-In", "Home"},
+				Tests:                []string{"test" + c1, "test" + c2, "test" + c3},
+				CreatedAt:            nowUnix,
+				LastUpdatedAt:        nowUnix,
 			},
 			{
-				ID:                     "test" + c1,
-				Name:                   "Malaria",
-				LabID:                  labID,
-				LabName:                "Test Lab",
-				Price:                  3700,
-				OldPrice:               0,
-				Description:            "Malaria Test",
-				Gender:                 "All",
-				SampleCollectionMethod: []string{"Walk-In", "Home"},
-				CreatedAt:              nowUnix,
-				LastUpdatedAt:          nowUnix,
+				ID:                   "test" + c1,
+				Name:                 "Malaria",
+				LabID:                labID,
+				LabName:              "Test Lab",
+				Price:                3700,
+				OldPrice:             0,
+				Description:          "Malaria Test",
+				Gender:               "All",
+				SampleCollectionMode: []string{"Walk-In", "Home"},
+				CreatedAt:            nowUnix,
+				LastUpdatedAt:        nowUnix,
 			},
 		},
 	}, nil
@@ -158,37 +158,33 @@ func (m *MongoDB) LabTests(labID string) (*db.LabTests, error) {
 func (m *MongoDB) LabTest(testID string) (*db.LabTest, error) {
 	nowUnix := time.Now().Unix()
 	return &db.LabTest{
-		ID:                     testID,
-		Name:                   "Malaria",
-		LabID:                  primitive.NewObjectID().Hex(),
-		LabName:                "Test Lab",
-		Price:                  3700,
-		OldPrice:               0,
-		Description:            "Malaria Test",
-		Gender:                 "All",
-		SampleCollectionMethod: []string{"Walk-In", "Home"},
-		CreatedAt:              nowUnix,
-		LastUpdatedAt:          nowUnix,
+		ID:                   testID,
+		Name:                 "Malaria",
+		LabID:                primitive.NewObjectID().Hex(),
+		LabName:              "Test Lab",
+		Price:                3700,
+		OldPrice:             0,
+		Description:          "Malaria Test",
+		Gender:               "All",
+		SampleCollectionMode: []string{"Walk-In", "Home"},
+		CreatedAt:            nowUnix,
+		LastUpdatedAt:        nowUnix,
 	}, nil
 }
 
 /**** Server Info ****/
 
 // Faqs returns information about frequently asked questions and help links.
-func (m *MongoDB) Faqs() (*db.Faqs, error) {
-	return &db.Faqs{
-		Faqs: []*db.Faq{
-			{
-				Question: "Who is LabTracka?",
-				Answer:   "LabTracka is a unified platform the aims to improve your medical lab test experience using modern technology.",
+func (m *MongoDB) Faqs() ([]*db.Faq, error) {
+	return []*db.Faq{
+		{
+			ID: "01",
+			FaqInfo: db.FaqInfo{
+				Title:  "How does it work?",
+				Answer: "Book a test and pay fot it, you'll have a phlebotomist at your door to collect your sample",
 			},
-		},
-		HelpLinks: []*db.HelpLink{
-			{
-				Title:   "How to verify phlebotomists on the app",
-				Link:    "https://www.youtube.com/watch?v=nMto27-t_8g",
-				IsVideo: true,
-			},
+			Hidden:    false,
+			Timestamp: "12345678",
 		},
 	}, nil
 }

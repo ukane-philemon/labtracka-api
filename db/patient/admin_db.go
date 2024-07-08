@@ -10,6 +10,6 @@ func (m *MongoDB) Orders(labIDs ...string) (map[string]map[string][]*db.Order, e
 
 // AdminStats returns some admin stats for display. If no lab id is returned,
 // all current stats will be returned.
-func (m *MongoDB) AdminStats(labIDs ...string) (db.AdminStats, error) {
-	return db.AdminStats{}, nil
+func (m *MongoDB) AdminStats(isBranch bool, labIDs ...string) (map[string]db.AdminStats, error) {
+	return map[string]db.AdminStats{}, nil
 }

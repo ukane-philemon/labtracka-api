@@ -34,9 +34,9 @@ type loginRequest struct {
 
 type loginResponse struct {
 	*db.Admin
-	db.AdminStats
-	AdminLabs []*db.AdminLabInfo `json:"admin_labs"` // only for super amin
-	Auth      *authResponse      `json:"auth"`
+	// db.AdminStats
+	AdminLabs []*db.LaboratoryInfo `json:"admin_labs"` // only for super amin
+	Auth      *authResponse        `json:"auth"`
 }
 
 type authResponse struct {

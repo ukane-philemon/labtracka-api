@@ -23,18 +23,18 @@ func (s *Server) handleGetFaqs(res http.ResponseWriter, req *http.Request) {
 // handleUpdateFaqs handles the "POST /faqs" endpoint and updates the frequently
 // asked questions from the db.
 func (s *Server) handleUpdateFaqs(res http.ResponseWriter, req *http.Request) {
-	var reqBody *db.Faqs
+	var reqBody []*db.Faq
 	err := request.DecodeJSONStrict(res, req, &reqBody)
 	if err != nil {
 		s.badRequest(res, req, "invalid request body")
 		return
 	}
 
-	faqs, err := s.db.UpdateFaqs(reqBody)
-	if err != nil {
-		s.serverError(res, req, fmt.Errorf("db.UpdateFaqs error: %w", err))
-		return
-	}
+	// faqs, err := s.db.UpdateFaqs(reqBody)
+	// if err != nil {
+	// 	s.serverError(res, req, fmt.Errorf("db.UpdateFaqs error: %w", err))
+	// 	return
+	// }
 
-	s.sendSuccessResponseWithData(res, req, faqs)
+	// s.sendSuccessResponseWithData(res, req, faqs)
 }

@@ -162,19 +162,19 @@ func (s *Server) handleLogin(res http.ResponseWriter, req *http.Request) {
 		},
 	}
 
-	if adminInfo.ServerAdmin || len(adminInfo.LabIDs) > 0 {
-		resp.AdminStats, err = s.patientDB.AdminStats(adminInfo.LabIDs...)
-		if err != nil {
-			s.logger.Error("patientDB.AdminStats error: %v", err)
-		}
-	}
+	// if adminInfo.ServerAdmin || len(adminInfo.AssignedLabIDs) > 0 {
+	// 	// resp.AdminStats, err = s.patientDB.AdminStats(adminInfo.AssignedLabIDs...)
+	// 	// if err != nil {
+	// 	// 	s.logger.Error("patientDB.AdminStats error: %v", err)
+	// 	// }
+	// }
 
-	if adminInfo.ServerAdmin || adminInfo.SuperAdmin {
-		resp.AdminLabs, err = s.db.AdminLabs(adminInfo.Email)
-		if err != nil {
-			s.logger.Error("db.AdminLabs error: %v", err)
-		}
-	}
+	// if adminInfo.ServerAdmin || adminInfo.SuperAdmin {
+	// 	// resp.AdminLabs, err = s.db.AdminLabs(adminInfo.Email)
+	// 	// if err != nil {
+	// 	// 	s.logger.Error("db.AdminLabs error: %v", err)
+	// 	// }
+	// }
 
 	s.sendSuccessResponseWithData(res, req, resp)
 }

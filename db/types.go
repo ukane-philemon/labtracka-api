@@ -72,13 +72,14 @@ func (a *Address) Validate() error {
 	return nil
 }
 
-// Patient is the complete information about a patient, including password
-// information.
+// Patient is the complete information about a patient.
 type Patient struct {
 	ID              string   `json:"id"`
 	ProfileImageURL string   `json:"profile_image" bson:"profile_image"`
 	SubAccounts     []string `json:"sub_accounts" bson:"sub_accounts"`
 	PatientInfo     `bson:"inline"`
+	CreatedAt       int64 `json:"created_at" bson:"created_at"`
+	LastUpdatedAt   int64 `json:"last_updated_at" bson:"last_updated_at"`
 }
 
 func (p *Patient) HasSubAccount(subAccountID string) bool {
@@ -101,13 +102,6 @@ type CreateAccountRequest struct {
 type PatientStats struct {
 	TotalNumberOfLabsVisited     int64 `json:"total_number_of_labs_visited"`
 	TotalNumberOfCompletedOrders int64 `json:"total_number_of_completed_orders"`
-}
-
-type AdminStats struct {
-	TotalUsers         int64 `json:"total_users"`
-	TotalRevenue       int64 `json:"total_revenue"`
-	TotalTestOrders    int64 `json:"total_test_orders"`
-	TotalPendingOrders int64 `json:"total_pending_orders"`
 }
 
 type SubAccountInfo struct {
@@ -162,30 +156,32 @@ type BasicLabInfo struct {
 	Featured bool    `json:"featured"`
 }
 
-type AdminLabInfo struct {
-	BasicLabInfo
-	CreatedAt     int64 `json:"created_at"`
-	LastUpdatedAt int64 `json:"last_updated_at"`
-}
-
 // LabTests is information about tests offered by a laboratory.
 type LabTests struct {
 	Categories []*TestCategory `json:"categories"`
 	Tests      []*LabTest      `json:"single_tests"`
 }
 
+type TestType string
+
+const (
+	TestTypeSingle  TestType = "Single"
+	TestTypePackage TestType = "Package"
+)
+
 type LabTest struct {
-	ID                     string   `json:"id"`
-	Name                   string   `json:"name"`
-	LabID                  string   `json:"lab_id"`
-	LabName                string   `json:"lab_name"`
-	Price                  float64  `json:"price"`
-	OldPrice               float64  `json:"old_price" bson:"old_price"`
-	Description            string   `json:"description"`
-	Gender                 string   `json:"gender"`
-	Categories             []string `json:"categories"`
-	IsDisabled             bool     `json:"is_disabled" bson:"is_disabled"`
-	SampleCollectionMethod []string `json:"sample_collection_method" bson:"sample_collection_method"`
+	ID                   string   `json:"id"`
+	Type                 TestType `json:"type"`
+	Name                 string   `json:"name"`
+	LabID                string   `json:"lab_id"`
+	LabName              string   `json:"lab_name"`
+	Price                float64  `json:"price"`
+	OldPrice             float64  `json:"old_price" bson:"old_price"`
+	Description          string   `json:"description"`
+	Gender               string   `json:"gender"`
+	Categories           []string `json:"categories"`
+	IsDisabled           bool     `json:"is_disabled" bson:"is_disabled"`
+	SampleCollectionMode []string `json:"sample_collection_mode" bson:"sample_collection_mode"`
 	// Tests is an array of tests ID when saving to db/test names when
 	// retrieving from db. This will be non-empty for test packages.
 	Tests         []string `json:"tests"`
@@ -240,19 +236,15 @@ type Notification struct {
 }
 
 type Faq struct {
-	Question string `json:"question"`
-	Answer   string `json:"answer"`
+	ID string `json:"id"`
+	FaqInfo
+	Hidden    bool   `json:"hidden"`
+	Timestamp string `json:"timestamp"`
 }
 
-type HelpLink struct {
-	Title   string `json:"title"`
-	Link    string `json:"link"`
-	IsVideo bool   `json:"is_video"`
-}
-
-type Faqs struct {
-	Faqs      []*Faq      `json:"faqs"`
-	HelpLinks []*HelpLink `json:"help_links" bson:"help_links"`
+type FaqInfo struct {
+	Title  string `json:"title"`
+	Answer string `json:"answer"`
 }
 
 type OrderTest struct {
@@ -306,12 +298,16 @@ type BankCard struct {
 }
 
 type Admin struct {
-	ID              string `json:"id"`
-	ProfileImageURL string `json:"profile_image" bson:"profile_image"`
-	AdminInfo
-	SuperAdmin  bool     `json:"super_admin"`
-	ServerAdmin bool     `json:"server_admin"`
-	LabIDs      []string `json:"lab_ids"`
+	ID              string   `json:"id"`
+	ProfileImageURL string   `json:"profile_image" bson:"profile_image"`
+	FirstName       string   `json:"first_name"`
+	LastName        string   `json:"last_name"`
+	Email           string   `json:"email"`
+	PhoneNumber     string   `json:"phone_number" bson:"phone_number"` // optional
+	Disabled        bool     `json:"disabled"`
+	IsSuperAdmin    bool     `json:"is_super_admin"`
+	IsServerAdmin   bool     `json:"is_server_admin"`
+	AssignedLabIDs  []string `json:"assigned_lab_ids"`
 }
 
 type AdminInfo struct {

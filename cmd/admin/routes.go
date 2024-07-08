@@ -81,7 +81,7 @@ func (s *Server) registerRoutes() http.Handler {
 
 		/**** Miscellaneous ****/
 		withAuth.Get("/faqs", s.handleGetFaqs)
-		withAuth.Post("/faq", s.handleUpdateFaqs)
+		// withAuth.Post("/faq", s.handleUpdateFaqs)
 	})
 
 	return mux

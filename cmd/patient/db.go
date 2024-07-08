@@ -84,5 +84,5 @@ type AdminDatabase interface {
 	/**** Server Info ****/
 
 	// Faqs returns information about frequently asked questions and help links.
-	Faqs() (*db.Faqs, error)
+	Faqs() ([]*db.Faq, error)
 }
